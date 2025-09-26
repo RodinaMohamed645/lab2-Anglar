@@ -1,0 +1,62 @@
+<div class="container">
+    <div class="row my-3 g-2">
+        <div class="col-6 ">
+            <input type="text" placeholder="Search By Name" class="form-control" [(ngModel)]="searchText">
+        </div>
+        <div class="col-6">
+            <select class="form-control" [(ngModel)]="selectedID">
+                @for(cat of categoryList;track cat.id)
+                {
+                <option [ngValue]="cat.id">{{cat.name}}</option>
+                }
+
+
+
+            </select>
+        </div>
+        <h1>{{selectedID}}</h1>
+    </div>
+    <div class="row g-3">
+        @for(prd of productList; track prd.id){
+        @if(prd.name.toLowerCase().includes(searchText.toLowerCase())||prd.cateogryID ==+selectedID||+selectedID==0)
+       
+        {
+        <div class="col-4">
+            <div class="card">
+                <img [src]="prd.img" class="card-img-top " alt="...">
+                <div class="card-body">
+
+                    <h5 class="card-title">Product Name : {{prd.name}}</h5>
+                    <h5 class="card-title">Product Quantity : {{prd.quantity}}</h5>
+                    <h5 class="card-title">Product Price : {{prd.price}}</h5>
+                    <h5 class="card-title">Product Category ID : {{prd.cateogryID}}</h5>
+                    @switch (prd.quantity) {
+                    @case (1) {
+                    <p class="card-title">Last Item</p>
+                    }
+                    @case (2) {
+                    <p class="card-title">Last two Item</p>
+                    }
+                    @case (0) {
+                    <p class="card-title">Out of stock</p>
+                    }
+                    @default {
+                    <p class="card-title">In stock</p>
+                    }
+                    }
+                    <button type="button" class="btn btn-primary mx-2" [disabled]="prd.quantity==0"
+                        (click)="buy(prd)">Buy</button>
+                    <button type="button" class="btn btn-primary" (click)="showDetails(prd)">Details</button>
+                </div>
+            </div>
+        </div>
+        }
+        }@empty
+        {
+        <div class="alert alert-danger" role="alert">
+            No product Exist
+        </div>
+        }
+
+    </div>
+</div>
